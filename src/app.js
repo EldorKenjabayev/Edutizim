@@ -7,14 +7,6 @@ require('dotenv').config();
 
 const errorHandler = require('./middleware/errorHandler');
 
-// Import routes
-const authRoutes = require('./routes/auth');
-const studentRoutes = require('./routes/students');
-const teacherRoutes = require('./routes/teachers');
-const gradeRoutes = require('./routes/grades');
-const attendanceRoutes = require('./routes/attendance');
-const reportRoutes = require('./routes/reports');
-
 const app = express();
 
 // Security middleware
@@ -58,6 +50,93 @@ app.get('/health', (req, res) => {
     service: 'EduSmartSystem Backend'
   });
 });
+
+// Import routes with error handling
+let authRoutes, studentRoutes, teacherRoutes, gradeRoutes, attendanceRoutes, reportRoutes;
+
+try {
+  authRoutes = require('./routes/auth');
+} catch (error) {
+  console.warn('Auth routes not found:', error.message);
+  authRoutes = express.Router();
+  authRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Auth routes not implemented yet',
+      message_uz: 'Auth yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
+
+try {
+  studentRoutes = require('./routes/students');
+} catch (error) {
+  console.warn('Student routes not found:', error.message);
+  studentRoutes = express.Router();
+  studentRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Student routes not implemented yet',
+      message_uz: 'Talaba yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
+
+try {
+  teacherRoutes = require('./routes/teachers');
+} catch (error) {
+  console.warn('Teacher routes not found:', error.message);
+  teacherRoutes = express.Router();
+  teacherRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Teacher routes not implemented yet',
+      message_uz: 'O\'qituvchi yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
+
+try {
+  gradeRoutes = require('./routes/grades');
+} catch (error) {
+  console.warn('Grade routes not found:', error.message);
+  gradeRoutes = express.Router();
+  gradeRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Grade routes not implemented yet',
+      message_uz: 'Baho yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
+
+try {
+  attendanceRoutes = require('./routes/attendance');
+} catch (error) {
+  console.warn('Attendance routes not found:', error.message);
+  attendanceRoutes = express.Router();
+  attendanceRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Attendance routes not implemented yet',
+      message_uz: 'Davomat yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
+
+try {
+  reportRoutes = require('./routes/reports');
+} catch (error) {
+  console.warn('Report routes not found:', error.message);
+  reportRoutes = express.Router();
+  reportRoutes.get('*', (req, res) => {
+    res.status(501).json({
+      success: false,
+      message: 'Report routes not implemented yet',
+      message_uz: 'Hisobot yo\'nalishlari hali amalga oshirilmagan'
+    });
+  });
+}
 
 // API routes
 app.use('/api/auth', authRoutes);
@@ -116,6 +195,6 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use(errorHandler);
+app.use(errorHandler.errorHandler);
 
 module.exports = app;
