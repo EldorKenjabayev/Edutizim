@@ -21,7 +21,19 @@ const sequelize = new Sequelize({
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   },
-  timezone: '+05:00' // Uzbekistan timezone
+  timezone: '+05:00'
 });
+
+// Test connection
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Database connection has been established successfully.');
+  } catch (error) {
+    console.error('❌ Unable to connect to the database:', error);
+  }
+}
+
+testConnection();
 
 module.exports = sequelize;

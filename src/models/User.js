@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs'); // bcrypt o'rniga bcryptjs
 
 module.exports = (sequelize) => {
   const User = sequelize.define('User', {
@@ -37,6 +37,7 @@ module.exports = (sequelize) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: 'first_name',
       validate: {
         len: [2, 50],
         notEmpty: true
@@ -45,6 +46,7 @@ module.exports = (sequelize) => {
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: 'last_name',
       validate: {
         len: [2, 50],
         notEmpty: true
@@ -57,15 +59,18 @@ module.exports = (sequelize) => {
     },
     isActive: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: true,
+      field: 'is_active'
     },
     lastLogin: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      field: 'last_login'
     },
     refreshToken: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      field: 'refresh_token'
     }
   }, {
     tableName: 'users',

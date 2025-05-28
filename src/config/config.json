@@ -1,0 +1,21 @@
+{
+    "development": {
+      "username": "eldorkenjebayev",
+      "password": "Eldor7446",
+      "database": "edusmart_db",
+      "host": "localhost",
+      "port": 5432,
+      "dialect": "postgres",
+      "timezone": "+05:00"
+    },
+    "production": {
+      "use_env_variable": "DATABASE_URL",
+      "dialect": "postgres",
+      "dialectOptions": {
+        "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+        }
+      }
+    }
+  }

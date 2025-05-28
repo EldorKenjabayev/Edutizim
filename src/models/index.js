@@ -1,32 +1,34 @@
 const sequelize = require('../config/database');
-const User = require('./User');
-const Student = require('./Student');
-const Teacher = require('./Teacher');
-const Class = require('./Class');
-const Subject = require('./Subject');
-const Grade = require('./Grade');
-const Attendance = require('./Attendance');
-const Guardian = require('./Guardian');
+const { DataTypes } = require('sequelize');
 
-// Initialize models
+// Model'larni import qilish
+const User = require('./User')(sequelize, DataTypes);
+const Student = require('./Student')(sequelize, DataTypes);
+const Teacher = require('./Teacher')(sequelize, DataTypes);
+const Class = require('./Class')(sequelize, DataTypes);
+const Subject = require('./Subject')(sequelize, DataTypes);
+const Grade = require('./Grade')(sequelize, DataTypes);
+const Attendance = require('./Attendance')(sequelize, DataTypes);
+const Guardian = require('./Guardian')(sequelize, DataTypes);
+
+// Model'larni bir joyga yig'ish
 const models = {
-  User: User(sequelize),
-  Student: Student(sequelize),
-  Teacher: Teacher(sequelize),
-  Class: Class(sequelize),
-  Subject: Subject(sequelize),
-  Grade: Grade(sequelize),
-  Attendance: Attendance(sequelize),
-  Guardian: Guardian(sequelize)
+  User,
+  Student,
+  Teacher,
+  Class,
+  Subject,
+  Grade,
+  Attendance,
+  Guardian,
+  sequelize
 };
 
-// Set up associations
+// Association'larni o'rnatish
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {
     models[modelName].associate(models);
   }
 });
-
-models.sequelize = sequelize;
 
 module.exports = models;
