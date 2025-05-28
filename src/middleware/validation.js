@@ -1,21 +1,45 @@
 const Joi = require('joi');
 
-const validate = (schema) => {
-  return (req, res, next) => {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        message_uz: 'Ma\'lumot tekshirish xatosi',
-        details: error.details.map(detail => ({
-          message: detail.message,
-          path: detail.path
-        }))
-      });
-    }
-    next();
-  };
+const validate = (schema) => (req, res, next) => {
+  const { error } = schema.validate(req.body);
+  
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.details[0].message,
+      message_uz: 'So\'rov ma\'lumotlarida xatolik'
+    });
+  }
+  
+  next();
+};
+
+const validateParams = (schema) => (req, res, next) => {
+  const { error } = schema.validate(req.params);
+  
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.details[0].message,
+      message_uz: 'Yo\'l parametrlarida xatolik'
+    });
+  }
+  
+  next();
+};
+
+const validateQuery = (schema) => (req, res, next) => {
+  const { error } = schema.validate(req.query);
+  
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.details[0].message,
+      message_uz: 'So\'rov parametrlarida xatolik'
+    });
+  }
+  
+  next();
 };
 
 // Validation schemas
@@ -71,7 +95,16 @@ const schemas = {
   })
 };
 
+const paramSchemas = {
+  id: Joi.object({
+    id: Joi.string().uuid().required()
+  })
+};
+
 module.exports = {
   validate,
-  schemas
+  validateParams,
+  validateQuery,
+  schemas,
+  paramSchemas
 };

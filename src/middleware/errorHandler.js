@@ -41,6 +41,10 @@ const errorHandler = (err, req, res, next) => {
       message_uz: err.message_uz || 'Ichki server xatosi',
       ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
     });
-  };
+};
+
+const asyncHandler = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
   
-  module.exports = errorHandler;
+module.exports = { errorHandler, asyncHandler };
